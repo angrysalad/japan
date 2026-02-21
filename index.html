@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japan 2026: Hotel Reservations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-ink: #2d2a26;
+            --color-paper: #fdfbf8;
+            --color-accent: #d4707a;
+            --color-accent-dark: #b85c66;
+            --color-muted: #7a756e;
+            --color-border: #e8e4de;
+            --color-card: #ffffff;
+            --color-blossom-light: #fdf2f4;
+            --color-blossom-pale: #fef8f9;
+            --color-branch: #5c4a3d;
+            --font-display: 'Playfair Display', Georgia, serif;
+            --font-body: 'Source Sans 3', -apple-system, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--color-paper);
+            color: var(--color-ink);
+            line-height: 1.6;
+            font-size: 16px;
+            position: relative;
+        }
+
+        /* Cherry blossom petals - floating decoration */
+        .petal {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0.6;
+        }
+        
+        .petal svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--color-accent);
+        }
+        
+        .petal-1 { top: 15%; left: 5%; animation: float 8s ease-in-out infinite; }
+        .petal-2 { top: 35%; right: 8%; animation: float 10s ease-in-out infinite 1s; }
+        .petal-3 { top: 55%; left: 3%; animation: float 9s ease-in-out infinite 2s; }
+        .petal-4 { top: 75%; right: 4%; animation: float 11s ease-in-out infinite 0.5s; }
+        .petal-5 { top: 25%; right: 3%; animation: float 7s ease-in-out infinite 1.5s; opacity: 0.4; }
+        .petal-6 { top: 85%; left: 6%; animation: float 12s ease-in-out infinite 3s; opacity: 0.5; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(10deg); }
+        }
+
+        @media (max-width: 768px) {
+            .petal { display: none; }
+        }
+
+        /* Header */
+        .hero {
+            background: linear-gradient(135deg, #3d3632 0%, #2d2a26 100%);
+            color: white;
+            padding: 3rem 1.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+        }
+
+        /* Cherry blossom branch decoration in hero */
+        .hero::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 200px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 200'%3E%3Cpath d='M300 20 Q250 40 220 35 Q180 30 150 50 Q120 70 100 65 Q70 60 40 80' stroke='%235c4a3d' stroke-width='3' fill='none' opacity='0.3'/%3E%3Cpath d='M220 35 Q230 20 240 25' stroke='%235c4a3d' stroke-width='2' fill='none' opacity='0.3'/%3E%3Cpath d='M150 50 Q155 35 165 40' stroke='%235c4a3d' stroke-width='2' fill='none' opacity='0.3'/%3E%3Ccircle cx='240' cy='25' r='8' fill='%23d4707a' opacity='0.4'/%3E%3Ccircle cx='235' cy='30' r='6' fill='%23d4707a' opacity='0.3'/%3E%3Ccircle cx='165' cy='40' r='8' fill='%23d4707a' opacity='0.4'/%3E%3Ccircle cx='160' cy='45' r='6' fill='%23d4707a' opacity='0.3'/%3E%3Ccircle cx='100' cy='65' r='7' fill='%23d4707a' opacity='0.35'/%3E%3Ccircle cx='105' cy='60' r='5' fill='%23d4707a' opacity='0.25'/%3E%3Ccircle cx='220' cy='38' r='5' fill='%23d4707a' opacity='0.25'/%3E%3Ccircle cx='70' cy='75' r='6' fill='%23d4707a' opacity='0.3'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: top right;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-eyebrow {
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+        }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 0;
+        }
+
+        /* Navigation */
+        .nav {
+            background: var(--color-card);
+            border-bottom: 1px solid var(--color-border);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .nav-inner {
+            display: flex;
+            gap: 0.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            justify-content: flex-start;
+        }
+
+        .nav a {
+            flex-shrink: 0;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            color: var(--color-muted);
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 2rem;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .nav a:hover {
+            background: var(--color-ink);
+            color: white;
+        }
+
+        /* Main content */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 4rem;
+        }
+
+        /* Hotel Cards */
+        .hotel-card {
+            background: var(--color-card);
+            border-radius: 1rem;
+            margin-bottom: 3rem;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            position: relative;
+        }
+
+        /* Subtle blossom accent on cards */
+        .hotel-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='85' cy='15' r='6' fill='%23d4707a' opacity='0.15'/%3E%3Ccircle cx='75' cy='25' r='4' fill='%23d4707a' opacity='0.1'/%3E%3Ccircle cx='90' cy='30' r='3' fill='%23d4707a' opacity='0.08'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .hotel-header {
+            padding: 2rem 2rem 1.5rem;
+            border-bottom: 1px solid var(--color-border);
+            position: relative;
+        }
+
+        .hotel-number {
+            display: inline-block;
+            background: var(--color-accent);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.25rem 0.75rem;
+            border-radius: 2rem;
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .hotel-name {
+            font-family: var(--font-display);
+            font-size: clamp(1.5rem, 5vw, 2rem);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            line-height: 1.2;
+        }
+
+        .hotel-dates {
+            font-size: 1rem;
+            color: var(--color-accent-dark);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .hotel-address {
+            font-size: 0.9rem;
+            color: var(--color-muted);
+            line-height: 1.5;
+        }
+
+        .hotel-address a {
+            color: inherit;
+            text-decoration: underline;
+            text-decoration-color: var(--color-border);
+            text-underline-offset: 2px;
+        }
+
+        .hotel-address a:hover {
+            color: var(--color-ink);
+            text-decoration-color: var(--color-ink);
+        }
+
+        /* Image placeholder */
+        .hotel-images {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            background: var(--color-border);
+        }
+
+        .image-placeholder {
+            aspect-ratio: 4/3;
+            background: linear-gradient(135deg, var(--color-blossom-pale) 0%, var(--color-blossom-light) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-placeholder::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='30' cy='40' r='12' fill='%23d4707a' opacity='0.15'/%3E%3Ccircle cx='70' cy='60' r='8' fill='%23d4707a' opacity='0.1'/%3E%3Ccircle cx='50' cy='30' r='6' fill='%23d4707a' opacity='0.12'/%3E%3Ccircle cx='20' cy='70' r='5' fill='%23d4707a' opacity='0.08'/%3E%3Ccircle cx='80' cy='25' r='4' fill='%23d4707a' opacity='0.1'/%3E%3C/svg%3E");
+            opacity: 0.8;
+        }
+
+        .image-placeholder span {
+            position: relative;
+            font-size: 0.75rem;
+            color: var(--color-accent-dark);
+            opacity: 0.6;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .hotel-image {
+            overflow: hidden;
+        }
+
+        .hotel-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            aspect-ratio: 4/3;
+        }
+        @media (max-width: 600px) {
+            .hotel-images {
+                grid-template-columns: 1fr;
+            }
+            .hotel-image img,
+            .image-placeholder {
+                aspect-ratio: 16/9;
+            }
+        }
+
+        /* Map */
+        .hotel-map {
+            height: 250px;
+            background: #e8e6e3;
+        }
+
+        .hotel-map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Content sections */
+        .hotel-content {
+            padding: 2rem;
+        }
+
+        .hotel-section {
+            margin-bottom: 2rem;
+        }
+
+        .hotel-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--color-ink);
+        }
+
+        /* Features */
+        .features {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .feature::before {
+            content: '◦';
+            color: var(--color-accent);
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* Trip context */
+        .trip-context {
+            background: linear-gradient(135deg, var(--color-blossom-pale) 0%, var(--color-blossom-light) 100%);
+            padding: 1.25rem 1.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            border-left: 3px solid var(--color-accent);
+        }
+
+        /* Reviews */
+        .reviews {
+            display: grid;
+            gap: 1.25rem;
+        }
+
+        .review {
+            padding-bottom: 1.25rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .review:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .review-quote {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--color-ink);
+            margin-bottom: 0.5rem;
+            font-style: italic;
+        }
+
+        .review-quote::before {
+            content: '\201C';
+            color: var(--color-accent);
+            font-family: var(--font-display);
+            font-size: 1.5em;
+            line-height: 0;
+            vertical-align: -0.2em;
+            margin-right: 0.1em;
+        }
+
+        .review-quote::after {
+            content: '\201D';
+            color: var(--color-accent);
+            font-family: var(--font-display);
+            font-size: 1.5em;
+            line-height: 0;
+            vertical-align: -0.2em;
+            margin-left: 0.1em;
+        }
+
+        .review-source {
+            font-size: 0.8rem;
+            color: var(--color-muted);
+        }
+
+        .review-source a {
+            color: var(--color-accent-dark);
+            text-decoration: none;
+        }
+
+        .review-source a:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 1.5rem;
+            background: var(--color-ink);
+            color: white;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60'%3E%3Ccircle cx='50' cy='30' r='8' fill='%23d4707a' opacity='0.2'/%3E%3Ccircle cx='120' cy='45' r='5' fill='%23d4707a' opacity='0.15'/%3E%3Ccircle cx='200' cy='20' r='6' fill='%23d4707a' opacity='0.18'/%3E%3Ccircle cx='280' cy='40' r='7' fill='%23d4707a' opacity='0.15'/%3E%3Ccircle cx='350' cy='25' r='5' fill='%23d4707a' opacity='0.12'/%3E%3Ccircle cx='380' cy='50' r='4' fill='%23d4707a' opacity='0.1'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+            pointer-events: none;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Utilities */
+        @media (max-width: 600px) {
+            .hotel-header,
+            .hotel-content {
+                padding: 1.5rem;
+            }
+            
+            .container {
+                padding: 1.5rem 1rem 3rem;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .nav, .petal {
+                display: none;
+            }
+            
+            .hotel-card {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+            
+            .hotel-map {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating cherry blossom petals -->
+    <div class="petal petal-1">
+        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="8" ry="10" transform="rotate(-20 12 12)"/></svg>
+    </div>
+    <div class="petal petal-2">
+        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="7" ry="9" transform="rotate(15 12 12)"/></svg>
+    </div>
+    <div class="petal petal-3">
+        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="6" ry="8" transform="rotate(-10 12 12)"/></svg>
+    </div>
+    <div class="petal petal-4">
+        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="7" ry="9" transform="rotate(25 12 12)"/></svg>
+    </div>
+    <div class="petal petal-5">
+        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="5" ry="7" transform="rotate(-30 12 12)"/></svg>
+    </div>
+    <div class="petal petal-6">
+        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="6" ry="8" transform="rotate(5 12 12)"/></svg>
+    </div>
+
+    <header class="hero">
+        <div class="hero-content">
+            <p class="hero-eyebrow">Hotel Reservations</p>
+            <h1>Japan 2026</h1>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <a href="#shinjuku">Shinjuku 室</a>
+            <a href="#penthouse">Shinjuku 空</a>
+            <a href="#kyoto">Kyoto</a>
+            <a href="#osaka">Osaka</a>
+            <a href="#ginza">Ginza</a>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <!-- HOTEL 1: Shinjuku Granbell -->
+        <article class="hotel-card" id="shinjuku">
+            <div class="hotel-header">
+                <span class="hotel-number">STAY 1 OF 5</span>
+                <h2 class="hotel-name">Shinjuku Granbell Hotel</h2>
+                <p class="hotel-dates">March 17–20, 2026 · 3 nights</p>
+                <p class="hotel-address">
+                    <a href="https://www.google.com/maps/search/?api=1&query=2-14-5+Kabukicho+Shinjuku+Tokyo+160-0021+Japan" target="_blank" rel="noopener">
+                        2-chōme-14-5 Kabukichō, Shinjuku City, Tokyo 160-0021, Japan
+                    </a>
+                </p>
+            </div>
+
+            <div class="hotel-images">
+                <div class="hotel-image"><img src="images/granbell1.jpg" alt="granbell photo 1" loading="lazy"></div>
+                <div class="hotel-image"><img src="images/granbell2.jpg" alt="granbell photo 2" loading="lazy"></div>
+                <div class="hotel-image"><img src="images/granbell3.jpg" alt="granbell photo 3" loading="lazy"></div>
+            </div>
+
+            <div class="hotel-map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3240.1!2d139.7034!3d35.6947!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188d2d9f2f8e25%3A0x7c2f5f2e3d4f5e6d!2sShinjuku%20Granbell%20Hotel!5e0!3m2!1sen!2sus!4v1234567890" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+
+            <div class="hotel-content">
+                <section class="hotel-section">
+                    <h3 class="section-title">About This Stay</h3>
+                    <div class="features">
+                        <p class="feature">Designer hotel with 28 unique room types created by Japanese and international artists</p>
+                        <p class="feature">Rooftop bar on the 13th floor with panoramic Shinjuku skyline views, open until 4am</p>
+                        <p class="feature">In the heart of Kabukicho — Tokyo's neon-lit entertainment district</p>
+                        <p class="feature">Walking distance to Shin-Okubo (Korea Town) for late-night food</p>
+                    </div>
+                </section>
+
+                <section class="hotel-section">
+                    <h3 class="section-title">Why This Hotel</h3>
+                    <div class="trip-context">
+                        The Tokyo arrival base — jet lag recovery with a rooftop bar, surrounded by Golden Gai's tiny bars and Kabukicho's 24-hour energy.
+                    </div>
+                </section>
+
+                <section class="hotel-section">
+                    <h3 class="section-title">Guest Reviews</h3>
+                    <div class="reviews">
+                        <div class="review">
+                            <p class="review-quote">Golden-Gai is down the block and so is the Onsen Thermae-Yu. You are also close by Higashi-Shinjuku Station and the main Shinjuku station.</p>
+                            <p class="review-source">— <a href="https://www.tripadvisor.com/Hotel_Review-g14133667-d4994810-Reviews-Shinjuku_Granbell_Hotel-Kabukicho_Shinjuku_Tokyo_Tokyo_Prefecture_Kanto.html" target="_blank" rel="noopener">TripAdvisor</a></p>
+                        </div>
+                        <div class="review">
+                            <p class="review-quote">The rooftop bar with great views open to non-residents proves a fantastic view over the city and a great backdrop for a drink. It's open until four in the morning.</p>
+                            <p class="review-source">— <a href="https://www.tripadvisor.com/Hotel_Feature-g14133667-d4994810-zft9161-Shinjuku_Granbell_Hotel.html" target="_blank" rel="noopener">TripAdvisor</a></p>
+                        </div>
+                        <div class="review">
+                            <p class="review-quote">The neighborhood is quiet and pleasantly retro during the day, a rarity in this otherwise futuristic city, and once the sun goes down, the streets come alive with neon signs.</p>
+                            <p class="review-source">— <a href="https://guide.michelin.com/us/en/hotels-stays/tokyo/granbell-hotel-shinjuku-7100" target="_blank" rel="noopener">Michelin Guide</a></p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </article>
+
+        <!-- HOTEL 2: Shinjuku Granbell Penthouse Suite -->
+        <article class="hotel-card" id="penthouse">
+            <div class="hotel-header">
+                <span class="hotel-number">STAY 2 OF 5</span>
+                <h2 class="hotel-name">Shinjuku Granbell Hotel — 空</h2>
+                <p class="hotel-dates">March 20–21, 2026 · 1 night</p>
+                <p class="hotel-address">
+                    <a href="https://www.google.com/maps/search/?api=1&query=2-14-5+Kabukicho+Shinjuku+Tokyo+160-0021+Japan" target="_blank" rel="noopener">
+                        2-chōme-14-5 Kabukichō, Shinjuku City, Tokyo 160-0021, Japan
+                    </a>
+                </p>
+            </div>
+
+            <div class="hotel-images">
+                <div class="hotel-image"><img src="images/penthouse1.jpg" alt="Granbell penthouse suite" loading="lazy"></div>
+                <div class="hotel-image"><img src="images/penthouse2.jpg" alt="Granbell penthouse suite" loading="lazy"></div>
+                <div class="hotel-image"><img src="images/penthouse3.jpg" alt="Granbell penthouse suite" loading="lazy"></div>
+            </div>
+
+            <div class="hotel-content">
+                <section class="hotel-section">
+                    <h3 class="section-title">About This Stay</h3>
+                    <div class="features">
+                        <p class="feature">62 sqm suite on the 17th floor</p>
+                        <p class="feature">Large skylight overhead and panoramic windows facing the Nishi-Shinjuku skyscrapers</p>
+                        <p class="feature">King bed (200cm) with open-plan living space</p>
+                        <p class="feature">Same hotel as the previous 3 nights — luggage transfers to the suite on check-in day</p>
+                    </div>
+                </section>
+
+                <section class="hotel-section">
+                    <h3 class="section-title">Why This Hotel</h3>
+                    <div class="trip-context">
+                        The last night in Shinjuku — a larger room with a skylight before the Shinkansen to Kyoto.
+                    </div>
+                </section>
+
+                <section class="hotel-section">
+                    <h3 class="section-title">Guest Reviews</h3>
+                    <div class="reviews">
+                        <div class="review">
+                            <p class="review-quote">Stunning views of Shinjuku and the room was beautiful and had a lot of space. The bathroom was stunning also being able to take a bath while looking out over the skyline at night was fantastic.</p>
+                            <p class="review-source">— <a href="https://www.tripadvisor.com/ShowUserReviews-g14133667-d4994810-r584076401-Shinjuku_Granbell_Hotel-Kabukicho_Shinjuku_Tokyo_Tokyo_Prefecture_Kanto.html" target="_blank" rel="noopener">TripAdvisor</a></p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </article>
+
+        <!-- HOTEL 3: THE BLOSSOM KYOTO -->
+        <article class="hotel-card" id="kyoto">
+            <div class="hotel-header">
+                <span class="hotel-number">STAY 3 OF 5</span>
+                <h2 class="hotel-name">THE BLOSSOM KYOTO</h2>
+                <p class="hotel-dates">March 21–24, 2026 · 3 nights</p>
+                <p class="hotel-address">
+                    <a href="https://www.google.com/maps/search/?api=1&query=140-2+Manjujucho+Shimogyo+Ward+Kyoto+600-8104+Japan" target="_blank" rel="noopener">
+                        140-2 Manjūjichō, Shimogyo Ward, Kyoto 600-8104, Japan
+                    </a>
+                </p>
+            </div>
+
+            <div class="hotel-images">
+                <div class="hotel-image"><img src="images/blossom1.jpg" alt="blossom photo 1" loading="lazy"></div>
+                <div class="hotel-image"><img src="images/blossom2.jpg" alt="blossom photo 2" loading="lazy"></div>
+                <div class="hotel-image"><img src="images/blossom3.jpg" alt="blossom photo 3" loading="lazy"></div>
+            </div>
+
+            <div class="hotel-map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3268.1!2d135.7534!3d34.9947!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x600108123abc1234%3A0x1234567890abcdef!2sTHE%20BLOSSOM%20KYOTO!5e0!3m2!1sen!2sus!4v1234567890" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+
+            <div class="hotel-content">
+                <section class="hotel-section">
+                    <h3 class="section-title">About This Stay</h3>
+                    <div class="features">
+                        <p class="feature">Opened recently by JR Hotels — everything is brand new and well-maintained</p>
+                        <p class="feature">Misted Japanese garden walkway leads to the lobby — unlike any other hotel entrance</p>
+                        <p class="feature">4-minute walk to Gojo Station, one stop from Kyoto Station and its Shinkansen hub</p>
+                        <p class="feature">Walking distance to Nishiki Market, Pontocho alley, and the Kamo River</p>
+                    </div>
+                </section>
+
+                <section class="hotel-section">
+                    <h3 class="section-title">Why This Hotel</h3>
+                    <div class="trip-context">
+                        The Kyoto base — central positioning for temple-hopping, with an on-site onsen, coin laundry, and easy access to Nara for a day trip.
+                    </div>
+                </section>
+
+                <section class="hotel-section">
+                    <h3 class="section-title">Guest Reviews</h3>
+                    <div class="reviews">
+                        <div class="review">
+                            <p class="review-quote">Walking down the breezeway to get to the lobby is stunningly beautiful, unlike any other hotel we've ever stayed.</p>
+                            <p class="review-source">— <a href="https://www.tripadvisor.com/Hotel_Feature-g298564-d25076792-zft9165-The_Blossom_Kyoto.html" target="_blank" rel="noopener">TripAdvisor</a></p>
+                        </div>
+                        <div class="review">
+                            <p class="review-quote">I loved staying at the Blossom in Kyoto, so much so that I canceled my booking in Osaka and extended my stay in Kyoto instead.</p>
+                            <p class="review-source">— <a href="https://www.tripadvisor.com/Hotel_Feature-g298564-d25076792-zft1-The_Blossom_Kyoto.html" target="_blank" rel="noopener">TripAdvisor</a></p>
+                        </div>
+                        <div class="review">
+                            <p class="review-quote">There is also a nice bath house. A 24hr grocery store Fresco is right next door, or a 7-11 across the road which is super convenient.</p>
+                            <p class="review-source">— <a href="https://www.tripadvisor.com/ShowUserReviews-g298564-d25076792-r943446856-The_Blossom_Kyoto-Kyoto_Kyoto_Prefecture_Kinki.html" target="_blank" rel="noopener">TripAdvisor</a></p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </article>
+
+        <!-- HOTEL 4: Swissotel Nankai Osaka -->
+        <article class="hotel-card" id="osaka">
+            <div class="hotel-header">
+                <span class="hotel-number">STAY 4 OF 5</span>
+                <h2 class="hotel-name">Swissôtel Nankai Osaka</h2>
+                <p class="hotel-dates">March 24–27, 2026 · 3 nights</p>
+                <p class="hotel-address">
+                    <a href="https://www.google.com/maps/search/?api=1&query=5-1-60+Namba+Chuo-ku+Osaka+542-0076+Japan" target="_blank" rel="noopener">
+                        5-1-60 Namba, Chuo-ku, Osaka 542-0076, Japan
+                    </a>
+                </p>
+            </div>
+
+            <div class="hotel-images">
+                <div class="hotel-image"><img src="images/swissotel1.jpg" alt="Swissotel Nankai Osaka" loading="lazy"></div>
+                <div class="hotel-image"><img src="images/swissotel2.jpg" alt="Swissotel Nankai Osaka" loading="lazy"></div>
+                <div class="hotel-image"><img src="images/swissotel3.jpg" alt="Swissotel Nankai Osaka" loading="lazy"></div>
+            </div>
+
+            <div class="hotel-map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3281.5!2d135.5014!3d34.6641!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6000e76f9ed89e43%3A0x2cf4e1a8e7cf4c9a!2sSwiss%C3%B4tel%20Nankai%20Osaka!5e0!3m2!1sen!2sus!4v1234567890" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+
+            <div class="hotel-content">
+                <section class="hotel-section">
+                    <h3 class="section-title">About This Stay</h3>
+                    <div class="features">
+                        <p class="feature">5-star hotel rising directly above Nankai Namba Station — elevator from the train platform to the lobby</p>
+                        <p class="feature">Pürovel Spa &amp; Sport on-site: gym, 3-lane indoor pool, hot tub, Japanese sauna and bath</p>
+                        <p class="feature">36th-floor dining at Table36 with panoramic city views; 9 restaurants and bars total</p>
+                        <p class="feature">10-minute walk to Dotonbori's neon signs and street food; Takashimaya department store connected below</p>
+                    </div>
+                </section>
+
+                <section class="hotel-section">
+                    <h3 class="section-title">Why This Hotel</h3>
+                    <div class="trip-context">
+                        The Osaka base — the best gym and spa on the trip, with Namba's nightlife and street food at the doorstep and Universal Studios about 30 minutes away by train.
+                    </div>
+                </section>
+
+                <section class="hotel-section">
+                    <h3 class="section-title">Guest Reviews</h3>
+                    <div class="reviews">
+                        <div class="review">
+                            <p class="review-quote">The location is just above Namba station which is connected to Takashimaya mall and the Dotonbori nearby. There is also a direct airport train access from below the hotel.</p>
+                            <p class="review-source">— <a href="https://www.tripadvisor.com/Hotel_Review-g14134988-d301569-Reviews-Swissotel_Nankai_Osaka-Namba_Chuo_Osaka_Osaka_Prefecture_Kinki.html" target="_blank" rel="noopener">TripAdvisor</a></p>
+                        </div>
+                        <div class="review">
+                            <p class="review-quote">Location-wise, Swissotel is in a great spot. Very easy walk to Dotonbori, tons of shopping, and access to several rail lines. My family really enjoyed our stay here and will be back the next time we're in Osaka.</p>
+                            <p class="review-source">— <a href="https://www.tripadvisor.com/ShowUserReviews-g14134988-d301569-r935829587-Swissotel_Nankai_Osaka-Namba_Chuo_Osaka_Osaka_Prefecture_Kinki.html" target="_blank" rel="noopener">TripAdvisor</a></p>
+                        </div>
+                        <div class="review">
+                            <p class="review-quote">This is a great hotel choice for those who want to experience Osaka's busy shopping area. The hotel itself is above the Namba station and Takashimaya with special access to both.</p>
+                            <p class="review-source">— <a href="https://www.tripadvisor.com/Hotel_Review-g14134988-d301569-Reviews-Swissotel_Nankai_Osaka-Namba_Chuo_Osaka_Osaka_Prefecture_Kinki.html" target="_blank" rel="noopener">TripAdvisor</a></p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </article>
+
+        <!-- HOTEL 5: Mitsui Garden Hotel Ginza Premier -->
+        <article class="hotel-card" id="ginza">
+            <div class="hotel-header">
+                <span class="hotel-number">STAY 5 OF 5</span>
+                <h2 class="hotel-name">Mitsui Garden Hotel Ginza Premier</h2>
+                <p class="hotel-dates">March 27–30, 2026 · 3 nights</p>
+                <p class="hotel-address">
+                    <a href="https://www.google.com/maps/search/?api=1&query=8-13-1+Ginza+Chuo+City+Tokyo+104-0061+Japan" target="_blank" rel="noopener">
+                        8-13-1 Ginza, Chuo City, Tokyo 104-0061, Japan
+                    </a>
+                </p>
+            </div>
+
+            <div class="hotel-images">
+                <div class="hotel-image"><img src="images/garden1.jpg" alt="Mitsui Garden Hotel Ginza Premier" loading="lazy"></div>
+                <div class="hotel-image"><img src="images/garden2.jpg" alt="Mitsui Garden Hotel Ginza Premier" loading="lazy"></div>
+                <div class="hotel-image"><img src="images/garden3.jpg" alt="Mitsui Garden Hotel Ginza Premier" loading="lazy"></div>
+            </div>
+
+            <div class="hotel-map">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3241.3!2d139.7634!3d35.6632!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x60188be5a3e3e8e7%3A0x8a0e1d9c8b9a4e0f!2sMitsui%20Garden%20Hotel%20Ginza%20Premier!5e0!3m2!1sen!2sus!4v1234567890" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+
+            <div class="hotel-content">
+                <section class="hotel-section">
+                    <h3 class="section-title">About This Stay</h3>
+                    <div class="features">
+                        <p class="feature">Every room sits on the 16th floor or above — panoramic Tokyo skyline and Tokyo Tower views from every window</p>
+                        <p class="feature">See-through bathroom window (switchable for privacy) for night views while soaking in the tub</p>
+                        <p class="feature">Cocktail KARIN bar on the 16th floor with a 600-year-old karin wood counter, open until 2am</p>
+                        <p class="feature">5-minute walk from Shimbashi Station; Ginza shopping district and Tsukiji Outer Market both nearby</p>
+                    </div>
+                </section>
+
+                <section class="hotel-section">
+                    <h3 class="section-title">Why This Hotel</h3>
+                    <div class="trip-context">
+                        The Tokyo finale — last-night cocktails with Tokyo Tower glowing through the window, final Ginza shopping, and a smooth departure with a noon check-out.
+                    </div>
+                </section>
+
+                <section class="hotel-section">
+                    <h3 class="section-title">Guest Reviews</h3>
+                    <div class="reviews">
+                        <div class="review">
+                            <p class="review-quote">This hotel is surrounded by ramen shops, sushi bars, convenient stores, pharmacy, French restaurant, in-house Italian restaurant. There is nothing that you can't find within walking distance, not to mention all the designer stores in Ginza!</p>
+                            <p class="review-source">— <a href="https://www.tripadvisor.com/ShowUserReviews-g14129573-d1082914-r157913426-Mitsui_Garden_Hotel_Ginza_Premier-Ginza_Chuo_Tokyo_Tokyo_Prefecture_Kanto.html" target="_blank" rel="noopener">TripAdvisor</a></p>
+                        </div>
+                        <div class="review">
+                            <p class="review-quote">The bathtub has a view on the city and at night this is just magical. Overall good value for money.</p>
+                            <p class="review-source">— <a href="https://www.tripadvisor.com/Hotel_Feature-g14129573-d1082914-zft9166-Mitsui_Garden_Hotel_Ginza_Premier.html" target="_blank" rel="noopener">TripAdvisor</a></p>
+                        </div>
+                        <div class="review">
+                            <p class="review-quote">Great location in Ginza, a short walk from Ginza Six mall and all the upscale shops. Also just a short walk from the train station.</p>
+                            <p class="review-source">— <a href="https://www.booking.com/hotel/jp/mitsui-garden-ginza-premier-chuo.html" target="_blank" rel="noopener">Booking.com</a></p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </article>
+
+    </main>
+
+    <footer>
+        <p>Japan 2026 · Hotel Reservations · Updated February 2026</p>
+    </footer>
+</body>
+</html>
